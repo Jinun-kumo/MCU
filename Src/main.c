@@ -370,6 +370,45 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+// 속도 설정 (0~1000 중 선택)
+#define MOTOR_SPEED_FWD   800   // 직진속도
+#define MOTOR_SPEED_TURN  600   // 회전속도
+
+// 직진
+void Drive_Forward(void) {
+    DirPwm_SetSpeed(&motorL, MOTOR_SPEED_FWD);
+    DirPwm_SetSpeed(&motorR, MOTOR_SPEED_FWD);
+}
+
+// 후진
+void Drive_Backward(void) {
+    DirPwm_SetSpeed(&motorL, -MOTOR_SPEED_FWD);
+    DirPwm_SetSpeed(&motorR, -MOTOR_SPEED_FWD);
+}
+
+// 좌회전 (제자리 회전)
+void Drive_Left(void) {
+    DirPwm_SetSpeed(&motorL, -MOTOR_SPEED_TURN);
+    DirPwm_SetSpeed(&motorR,  MOTOR_SPEED_TURN);
+}
+
+// 우회전 (제자리 회전)
+void Drive_Right(void) {
+    DirPwm_SetSpeed(&motorL,  MOTOR_SPEED_TURN);
+    DirPwm_SetSpeed(&motorR, -MOTOR_SPEED_TURN);
+}
+
+// 급정지 (브레이크 느낌: DIR 유지, PWM=0)
+void Drive_Stop(void) {
+    DirPwm_SetSpeed(&motorL, 0);
+    DirPwm_SetSpeed(&motorR, 0);
+}
+
+// 완전 Coast (관성 굴러감)
+void Drive_Coast(void) {
+    DirPwm_Coast(&motorL);
+    DirPwm_Coast(&motorR);
+}
 
 /* USER CODE END 4 */
 
